@@ -91,7 +91,7 @@ vim ./studentList.txt
 # Edit with command
 function editList2(){
  clear
- echo -e "${BLUE}\n\nThe information is: $NAME \n${NC}"
+ echo -e "${BLUE}\n\nThe information is: \n${NC}"
  cat ./studentList.txt
  echo -e "${BLUE}\nInput the NAME of the student you want to edit: ${YELLOW}"
  read NAME
