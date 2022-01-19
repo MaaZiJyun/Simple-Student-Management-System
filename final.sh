@@ -190,7 +190,9 @@ clear
    return 0
   fi
   echo -e "${BLUE}\n\nThe information is: \n${NC}"
-  awk '{print NR " - " $0}' ./studentList.txt
+  printf "Index\tName\tMetric\tScore1\tScore2\tScore3\tScore4\tScore5\tPercentage\tGrade\n"
+  echo "------------------------------------------------------------------------------------------"
+  awk '{print NR "\t" $0}' ./studentList.txt
   echo -e "\n\n\n"
   read -n 1 -s -r -p "Press any key to continue"
   clear
