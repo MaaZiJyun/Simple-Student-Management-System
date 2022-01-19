@@ -91,8 +91,6 @@ function editList(){
     read NAME
     if [ "$NAME" = "" ]; then
         echo -e "${RED}Invalid Input${NC}"
-        sleep 2
-        return 0
     else
         GET=`grep "$NAME" ./studentList.txt`
         if [ -n "$GET" ]; then
@@ -129,31 +127,45 @@ function exitProgram() {
 
 # calculation of the grades of the students
 function calculation(){
-  # content of the function
+  # $result = `expr $1 + $2`
+  result=$(($1 + $2))
+  echo $result
 }
 
 # insertStudent: add new student info to the list
 function insertStudent(){
     clear
-    echo -e "${BLUE}Enter NAME and METRIC number.${NC}"
-    echo -e "\c"
+    printf "${BLUE}Enter NAME: ${NC}"
+    read name
+    printf "${BLUE}Enter METRIC: ${NC}"
+    read metric
+    echo -e "${BLUE}Enter SCORE 1: ${NC}"
+    read s1
+    echo -e "${BLUE}Enter SCORE 2: ${NC}"
+    read s2
+    echo -e "${BLUE}Enter SCORE 3: ${NC}"
+    read s3
+    echo -e "${BLUE}Enter SCORE 4: ${NC}"
+    read s4
+    echo -e "${BLUE}Enter SCORE 5: ${NC}"
+    read s5
     
-    if [ ! -f ./studentList.txt ]; then
-        touch studentList.txt
-    fi
     
-    read NEW
+    
+    record=`echo -e "${s1}\t${s2}\t${s3}\t${s4}\t${s5}"`
+    echo "Record: ${record}"
+    echo "inserted successfully"
     #NEW include student name and metric
     
-    if [ "$NEW" != "" ]; then
-        echo "$NEW" >> ./studentList.txt
+    # if [ "$NEW" != "" ]; then
+    #     echo "$NEW" >> ./studentList.txt
         
-        sort -o ./studentList.txt ./studentList.txt
-        echo -e "${GREEN}Successful${NC}"
-    else
-        echo -e "${RED}Invalid Input${NC}"
-    fi
-    sleep 2
+    #     sort -o ./studentList.txt ./studentList.txt
+    #     echo -e "${GREEN}Successful${NC}"
+    # else
+    #     echo -e "${RED}Invalid Input${NC}"
+    # fi
+    sleep 20
 }
 
 # Delete a person in student list
