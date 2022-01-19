@@ -82,14 +82,8 @@ do
 done
 }
 
-# Edit with VIM editor 
-function editList() { 
-vim ./studentList.txt
- 
-}
-
 # Edit with command
-function editList2(){
+function editList(){
  clear
  echo -e "${BLUE}\n\nThe information is: \n${NC}"
  cat ./studentList.txt
