@@ -86,7 +86,8 @@ function main(){
 function editList(){
     clear
     echo -e "${BLUE}\n\nThe information is: \n${NC}"
-    cat ./studentList.txt
+    resource="./studentList.txt"
+    printData
     echo -e "${BLUE}\nInput the NAME of the student you want to edit: ${YELLOW}"
     read NAME
     if [ "$NAME" = "" ]; then
@@ -101,11 +102,11 @@ function editList(){
             insertStudent
         else
             echo -e "${RED}Student${YELLOW} ${NAME} ${RED}was not found ${NC}"
+            echo -e "\n\n\n"
+            read -n 1 -s -r -p "Press any key to continue"
+            clear
         fi
     fi
-    echo -e "\n\n\n"
-    read -n 1 -s -r -p "Press any key to continue"
-    clear
 }
 
 # Screen Help Function
@@ -215,16 +216,8 @@ function deleteStudent() {
     sleep 1
 }
 
-# Display the student list
-function showList() {
-    clear
-    if [ ! -f ./studentList.txt ]; then
-        echo -e "${RED}List is empty, Please add it first. ${NC}"
-        sleep 2
-        clear
-        return 0
-    fi
-    echo -e "${BLUE}\n\nThe information is: \n${NC}"
+# Read and format the data from txt
+function printData(){
     printf "%-10s%-20s%-10s%-10s%-10s%-10s%-10s%-10s%-20s%-10s\n" "Index" "Name" "Metric" "Score1" "Score2" "Score3" "Score4" "Score5" "Percentage" "Grade"
     echo "----------------------------------------------------------------------------------------------------------------------"
     i=1
@@ -241,7 +234,21 @@ function showList() {
         grade=`echo "$line" | cut -d '|' -f 9`
         printf "%-10s%-20s%-10s%-10s%-10s%-10s%-10s%-10s%-20s%-10s\n" ${i} ${name} ${metric} ${s1} ${s2} ${s3} ${s4} ${s5} ${per} ${grade}
         i=`expr $i + 1`
-    done < ./studentList.txt
+    done < $resource
+}
+
+# Display the student list
+function showList() {
+    clear
+    if [ ! -f ./studentList.txt ]; then
+        echo -e "${RED}List is empty, Please add it first. ${NC}"
+        sleep 2
+        clear
+        return 0
+    fi
+    echo -e "${BLUE}\n\nThe information is: \n${NC}"
+    resource="./studentList.txt"
+    printData
     echo -e "\n\n\n"
     read -n 1 -s -r -p "Press any key to continue"
     clear
@@ -270,7 +277,8 @@ function findStudent(){
         GET=`grep "$NAME" ./studentList.txt`
         if [ -n "$GET" ]; then
             echo -e "${BLUE}\n\nThe information is: \n${NC}"
-            awk '{print NR " - " $0}' ./temp
+            resource="./temp"
+            printData
         else
             echo -e "${RED}Student${YELLOW} ${NAME} ${RED}was not found ${NC}"
         fi
