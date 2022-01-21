@@ -127,9 +127,30 @@ function exitProgram() {
 
 # calculation of the grades of the students
 function calculation(){
-  # $result = `expr $1 + $2`
-  result=$(($1 + $2))
-  echo $result
+    # $result = `expr $1 + $2`
+    #   result=$(($1 + $2))
+    #   echo $result
+    let total=$1+$2+$3+$4+$5
+    let per=(total/5)
+    let grade
+    if [ "$per" -ge 80 ];
+    then
+        grade="A"
+    elif [ "$per" -ge 70 -a $per -lt 80 ];
+    then
+        grade="B"
+    elif [ "$per" -ge 60 -a $per -lt 70 ];
+    then
+        grade="C"
+    elif [ "$per" -ge 50 -a $per -lt 60 ];
+    then
+        grade="D"
+    elif [ "$per" -ge 40 -a $per -lt 50 ];
+    then
+        grade="E"
+    else
+        grade="F"
+    fi
 }
 
 # insertStudent: add new student info to the list
@@ -139,33 +160,31 @@ function insertStudent(){
     read name
     printf "${BLUE}Enter METRIC: ${NC}"
     read metric
-    echo -e "${BLUE}Enter SCORE 1: ${NC}"
+    printf "${BLUE}Enter SCORE 1: ${NC}"
     read s1
-    echo -e "${BLUE}Enter SCORE 2: ${NC}"
+    printf "${BLUE}Enter SCORE 2: ${NC}"
     read s2
-    echo -e "${BLUE}Enter SCORE 3: ${NC}"
+    printf "${BLUE}Enter SCORE 3: ${NC}"
     read s3
-    echo -e "${BLUE}Enter SCORE 4: ${NC}"
+    printf "${BLUE}Enter SCORE 4: ${NC}"
     read s4
-    echo -e "${BLUE}Enter SCORE 5: ${NC}"
+    printf "${BLUE}Enter SCORE 5: ${NC}"
     read s5
     
-    
-    
-    record=`echo -e "${s1}\t${s2}\t${s3}\t${s4}\t${s5}"`
-    echo "Record: ${record}"
-    echo "inserted successfully"
-    #NEW include student name and metric
-    
-    # if [ "$NEW" != "" ]; then
-    #     echo "$NEW" >> ./studentList.txt
+    calculation $s1 $s2 $s3 $s4 $s5
+    GET=`grep "$metric" ./studentList.txt | cut -d '|' -f 2`
+    # printf $GET
+    if [ "$GET" = "$metric" ]; then
+        echo -e "${RED}Metric repeatation, Please try another one${NC}\n"
+    else
+        record=`printf "%s|%s|%s|%s|%s|%s|%s|%s|%s\n" ${name} ${metric} ${s1} ${s2} ${s3} ${s4} ${s5} ${per} ${grade}`
+        echo "$record" >> ./studentList.txt
         
-    #     sort -o ./studentList.txt ./studentList.txt
-    #     echo -e "${GREEN}Successful${NC}"
-    # else
-    #     echo -e "${RED}Invalid Input${NC}"
-    # fi
-    sleep 20
+        sort -o ./studentList.txt ./studentList.txt
+        echo -e "${GREEN}inserted successfully${NC}\n"
+    fi
+
+    read -n 1 -s -r -p "Press any key to continue"
 }
 
 # Delete a person in student list
@@ -206,9 +225,23 @@ function showList() {
         return 0
     fi
     echo -e "${BLUE}\n\nThe information is: \n${NC}"
-    printf "Index\tName\tMetric\tScore1\tScore2\tScore3\tScore4\tScore5\tPercentage\tGrade\n"
-    echo "------------------------------------------------------------------------------------------"
-    awk '{print NR "\t" $0}' ./studentList.txt
+    printf "%-10s%-20s%-10s%-10s%-10s%-10s%-10s%-10s%-20s%-10s\n" "Index" "Name" "Metric" "Score1" "Score2" "Score3" "Score4" "Score5" "Percentage" "Grade"
+    echo "----------------------------------------------------------------------------------------------------------------------"
+    i=1
+    while read line
+    do
+        name=`echo "$line" | cut -d '|' -f 1`
+        metric=`echo "$line" | cut -d '|' -f 2`
+        s1=`echo "$line" | cut -d '|' -f 3`
+        s2=`echo "$line" | cut -d '|' -f 4`
+        s3=`echo "$line" | cut -d '|' -f 5`
+        s4=`echo "$line" | cut -d '|' -f 6`
+        s5=`echo "$line" | cut -d '|' -f 7`
+        per=`echo "$line" | cut -d '|' -f 8`
+        grade=`echo "$line" | cut -d '|' -f 9`
+        printf "%-10s%-20s%-10s%-10s%-10s%-10s%-10s%-10s%-20s%-10s\n" ${i} ${name} ${metric} ${s1} ${s2} ${s3} ${s4} ${s5} ${per} ${grade}
+        i=`expr $i + 1`
+    done < ./studentList.txt
     echo -e "\n\n\n"
     read -n 1 -s -r -p "Press any key to continue"
     clear
@@ -245,8 +278,7 @@ function findStudent(){
     fi
     echo -e "\n\n\n"
     read -n 1 -s -r -p "Press any key to continue"
-    clear
-    
+    clear   
 }
 
 # Run
