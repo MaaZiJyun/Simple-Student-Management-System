@@ -70,8 +70,6 @@ function main(){
             ;;
             6 ) showInfo;
             ;;
-            7 ) editList2; clear
-            ;;
             0 ) exitProgram; clear
             ;;
             * ) echo -e "${RED}Invalid Choice !${NC}"
