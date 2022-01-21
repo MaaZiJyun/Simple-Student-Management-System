@@ -22,19 +22,19 @@ BLUE='\033[0;34m'
 # title_printing: print the title of the project
 
 function bigTitle(){
-    echo -e "${GREEN}
-   ______          __         __
-  / __/ /___ _____/ /__ ___  / /_
- _\ \/ __/ // / _  / -_) _ \/ __/
-/___/\__/\_,_/\_,_/\__/_//_/\__/                 __
+echo -e "${GREEN}
+   ______          __         __                    
+  / __/ /___ _____/ /__ ___  / /_                   
+ _\ \/ __/ // / _  / -_) _ \/ __/                   
+/___/\__/\_,_/\_,_/\__/_//_/\__/                 __ 
   /  |/  /__ ____  ___ ____ ____ __ _  ___ ___  / /_
  / /|_/ / _ \`/ _ \/ _ \`/ _ \`/ -_)  ' \/ -_) _ \/ __/
-/_/__/_/\_,_/_//_/\_,_/\_, /\__/_/_/_/\__/_//_/\__/
-  / __/_ _____ / /____/___/
- _\ \/ // (_-</ __/ -_)  ' \
-/___/\_, /___/\__/\__/_/_/_/
-    /___/
-    "
+/_/__/_/\_,_/_//_/\_,_/\_, /\__/_/_/_/\__/_//_/\__/ 
+  / __/_ _____ / /____/___/                         
+ _\ \/ // (_-</ __/ -_)  ' \                        
+/___/\_, /___/\__/\__/_/_/_/                        
+    /___/                                           
+"
 }
 
 # main function: the entrance of the system
@@ -117,7 +117,7 @@ Group members are:
 1. Wen Yu 199657
 2. Wang Yida 201406
 3. Ma Zhiyuan 201464
-    4. Zhou Lingpei 201357"
+4. Zhou Lingpei 201357"
 }
 
 # Exit
@@ -171,6 +171,10 @@ function insertStudent(){
     read s4
     printf "${BLUE}Enter SCORE 5: ${NC}"
     read s5
+
+    if [ ! -f ./studentList.txt ]; then
+        touch studentList.txt
+    fi
     
     calculation $s1 $s2 $s3 $s4 $s5
     GET=`grep "$metric" ./studentList.txt | cut -d '|' -f 2`
@@ -191,7 +195,7 @@ function insertStudent(){
 # Delete a person in student list
 function deleteStudent() {
     clear
-    echo -e "${BLUE}Please input the NAME >>> ${NC}"
+    echo -e "${BLUE}Please input the Metric >>> ${NC}"
     read NAME
     
     if [ ! -f ./studentList.txt ]; then
